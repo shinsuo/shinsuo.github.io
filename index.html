@@ -11,22 +11,15 @@
   </head>
   <body>
     <h1>Shin's World!</h1>
-
     <br>
-    <iframe src="game.html" frameborder="no" border="0" scrolling="no" id="game"></iframe>
-    <script type="text/javascript">
-      function reinitIframe(){
-        var iframe = document.getElementById("game");
-        try{
-        var bHeight = iframe.contentWindow.document.body.scrollHeight;
-        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-        var height = Math.max(bHeight, dHeight);
-        iframe.height = height;
-        console.log(height);
-      }catch (ex){}
-      }
-      window.setInterval("reinitIframe()", 200);
-    </script>
+
+    <h2>cocos</h2><br>
+    <a href="game/cocos/example">cocos > example</a><br>
+    
+    <h2>unity</h2><br>
+    <a href="game/unity/WebGL">unity > WebGL</a><br>
+
+    
     <br>
     
   </body>
