@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>change demo</title>
+  <style>
+  div.OutPut {
+    color: red;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+  <!-- DamageCount:<input class="DamageCount" type="text" value="">
+  <input class="Generate" type="button" value="Generate"><br> -->
+  <!-- order1:<input class="FrameNum" type="text" value=""><input class="FrameDamage" type="range" value="0" min="0" max="100"><br> -->
+  <div class="OutPut"></div><br>
+  <div class="DamageTable" id="DamageTable">
+    <!-- order1:<input class="FrameNum" type="text" value=""><input class="FrameDamage" type="range" value="0" min="0" max="100"><br>
+    order2:<input class="FrameNum" type="text" value=""><input class="FrameDamage" type="range" value="0" min="0" max="100"><br>
+    order3:<input class="FrameNum" type="text" value=""><input class="FrameDamage" type="range" value="0" min="0" max="100"><br> -->
+  </div><br>
+
+  
+<script>
+
+$( "select" )
+  .change(function () {
+    var str = "";
+    $( "select option:selected" ).each(function() {
+      str += $( this ).text() + " ";
+    });
+    $( "div" ).text( str );
+  })
+  .change();
+
+  function generate_input(input_count) {
+    for (var index = 0; index < input_count; index++) {
+      var input_str = "order"+(index+1)+":<input class='FrameNum' type='text'><input class='FrameDamage' type='range' value='1' min='0' max='100'><br>";
+      $( "div.DamageTable" ).append( input_str );
+    }
+  }
+
+  $( "input.Generate" ).click(function() {
+    var DamageCount = $('input.DamageCount').val();
+    generate_input(DamageCount);
+    // var ja = "<script>$('input.FrameDamage').on('input',function(e){refreshData();});$('input.FrameNum').on('input',function(e){refreshData();});<\/script>";
+    // document.getElementById("DamageTable").appendChild(ja);
+  });
+
+  generate_input(20);
+
+  $("input.target").on('input',function(e){  
+
+    $( "div.OutPut" ).text( $(this).context.value );
+  });
+
+  function calpercent(params) {
+    return params
+  }
+
+  function refreshData() {
+    var aa = "";
+    var i = 0;
+    var len = $("input.FrameDamage").length;
+    var percent_arr = new Array();
+    var percent_sum = 0;
+    var index_arr = new Array();
+    for (var index = 0; index < len; index++) {
+      var obj_FrameDamage = $("input.FrameDamage")[index];
+      var percent = calpercent(obj_FrameDamage.value);
+
+      var obj_FrameNum = $("input.FrameNum")[index];
+      var order2 = parseInt(obj_FrameNum.value)
+      if(isNaN(order2)){
+        order2 = 0;
+        continue;
+      }
+      
+      index_arr.push(index);
+      percent_arr.push(parseInt(percent));
+      percent_sum += parseInt(percent); 
+    }
+    var percent_sum2 = 0;
+    for (var index = 0; index < percent_arr.length; index++) {
+      percent_arr[index] = Math.round(percent_arr[index]/percent_sum*100);
+      percent_sum2+=percent_arr[index];
+    }
+
+    console.log(percent_arr);
+    console.log(percent_sum2);
+    percent_arr[percent_arr.length-1] = percent_arr[percent_arr.length-1] +(100 - percent_sum2)
+
+    
+    for (var indexj = 0; indexj < index_arr.length; indexj++) {
+      var index = index_arr[indexj];
+      var obj_FrameDamage = $("input.FrameDamage")[index];
+      var obj_FrameNum = $("input.FrameNum")[index];
+      var percent = calpercent(obj_FrameDamage.value);
+      var order2 = parseInt(obj_FrameNum.value)
+      // if(isNaN(order2)){
+      //   order2 = 0;
+      //   continue;
+      // }
+
+      aa += order2*2+":"+percent_arr[indexj]+":2:1";
+      if(indexj < index_arr.length - 1){
+        aa += ","
+      }
+      $( "div.OutPut" ).text(aa);
+    }
+  }
+  
+  $('input.FrameDamage').on('input',function(e){refreshData();});$('input.FrameNum').on('input',function(e){refreshData();});
+</script>
+ 
+</body>
+</html>
